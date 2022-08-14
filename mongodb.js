@@ -35,6 +35,7 @@ async function create(collection, data) {
     const db = await connectDB();
     collection = db.collection(collection);
     const result = await collection.insert(data);
+    closeConnection();
     return result;
 }
 
@@ -42,13 +43,31 @@ async function updateOne(collection, where, data) {
     const db = await connectDB();
     collection = db.collection(collection);
     const result = await collection.updateOne(where, data);
+    closeConnection();
     return result;
 }
 
-async function update(collection, where, data) {
+async function updateMany(collection, where, data) {
     const db = await connectDB();
     collection = db.collection(collection);
     const result = await collection.updateMany(where, data);
+    closeConnection();
+    return result;
+}
+
+async function deleteOne(collection, where) {
+    const db = connectDB();
+    collection = (await db).collection(collection);
+    const result = await collection.deleteOne(where);
+    closeConnection();
+    return result;
+}
+
+async function deleteMany(collection, where) {
+    const db = connectDB();
+    collection = (await db).collection(collection);
+    const result = await collection.deleteMany(where);
+    closeConnection();
     return result;
 }
 
@@ -56,5 +75,7 @@ module.exports = {
     findAll,
     create,
     updateOne,
-    update
+    updateMany,
+    deleteOne,
+    deleteMany
 };

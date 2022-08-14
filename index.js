@@ -1,9 +1,8 @@
 const mongodb = require("./mongodb")
 
 async function main() {
-    const where = { role: "Employee" };
-    const data = { status: "Active" };
-    let result = await mongodb.update("User", where, { $set: data });
+    const where = { status: "Active" };
+    let result = await mongodb.deleteMany("User", where);
     console.log(result);
     return "Done";
 }
