@@ -31,6 +31,14 @@ async function findAll(collection) {
 
 }
 
+async function create(collection, data) {
+    const db = await connectDB();
+    collection = db.collection(collection);
+    const result = await collection.insert(data);
+    return result;
+}
+
 module.exports = {
-    findAll
+    findAll,
+    create
 };
