@@ -16,14 +16,14 @@ app.post('', async (req, res) => {
     res.send(result);
 });
 
-app.put('/:name', async (req, res) => {
+app.put('/:id', async (req, res) => {
     let data = req.body;
-    let result = await mongodb.updateOne("User", { name: req.params.name }, data);
+    let result = await mongodb.updateOne("User", { _id: mongodb.objectId(req.params.id) }, data);
     res.send(result);
 });
 
-app.delete('/:name', async (req, res) => {
-    let result = await mongodb.deleteOne("User", { name: req.params.name });
+app.delete('/:id', async (req, res) => {
+    let result = await mongodb.deleteOne("User", { _id: mongodb.objectId(req.params.id) });
     res.send(result);
 });
 

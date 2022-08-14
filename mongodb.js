@@ -1,4 +1,5 @@
 const { MongoClient } = require("mongodb")
+const mongodb = require("mongodb")
 
 // Connection String
 // const url = 'mongodb://localhost:27017';
@@ -71,11 +72,16 @@ async function deleteMany(collection, where) {
     return result;
 }
 
+function objectId(id) {
+    return new mongodb.ObjectId(id);
+}
+
 module.exports = {
     findAll,
     create,
     updateOne,
     updateMany,
     deleteOne,
-    deleteMany
+    deleteMany,
+    objectId
 };
