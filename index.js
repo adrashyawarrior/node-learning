@@ -1,35 +1,56 @@
-const mongoose = require("mongoose");
+require("./config")
+const express = require("express")
+const Product = require("./models/product")
 
-mongoose.connect("mongodb+srv://lalit:8gGQeRMMmhJlALfd@cluster0.otjpmcp.mongodb.net/test?retryWrites=true&w=majority");
 
-// Schema
-const ProductSchema = new mongoose.Schema({
-    name: String,
-    price: Number,
+const app = express();
+
+app.use(express.json());
+
+app.get('', async (req, res) => {
+    const products = await Product.find();
+    res.send(products);
 });
 
-// Model
-const Product = new mongoose.model('products', ProductSchema);
-
-// create
-const create = async () => {
-    let product = new Product({
-        name: "Realme 3",
-        price: 9999
-    });
+app.post('', async (req, res) => {
+    let data = req.body;
+    let product = new Product(data);
     product = await product.save();
-    console.log(product);
-}
+    data = {
+        success: true,
+        message: "Product Created Successfully.",
+        data: product
+    };
+    res.send(data);
+});
 
-// update
-const update = async () => {
-    let product = await Product.update(
-        { name: "Realme 3" },
-        {
-            $set: { name: "Realme C3" }
-        }
-    );
-    console.log(product);
-}
+app.get('/search/:key', async (req, res) => {
+    let products = await Product.find({
+        $or: [
+            { name: { $regex: req.params.key } },
+            { brand: { $regex: req.params.key } }
+        ]
+    });
+    res.send(products);
+});
 
-update();
+app.delete('/:_id', async (req, res) => {
+    await Product.deleteOne(req.params);
+    data = {
+        success: true,
+        message: "Product Deleted Successfully."
+    };
+    res.send(data);
+});
+
+app.put('/:_id', async (req, res) => {
+    let product = await Product.updateOne(req.params, { $set: req.body });
+    data = {
+        success: true,
+        message: "Product Updated Successfully.",
+        data: product
+    };
+    res.send(data);
+});
+
+app.listen(4000);
