@@ -8,7 +8,6 @@ const client = new MongoClient(url);
 // Database Name
 const database = "test";
 
-
 async function connectDB() {
     // Connect
     await client.connect();
@@ -20,9 +19,18 @@ async function connectDB() {
 }
 
 function closeConnection() {
-    client.close()
-        .then(console.log("MongoDB Connection Closed Successfully."))
-        .catch(console.error);
+    client.close().then(console.log("Connection Closed Successfully.")).catch(console.error);
 }
 
-module.exports = { connectDB, closeConnection };
+async function findAll(collection) {
+    let db = await connectDB();
+    collection = db.collection(collection);
+    let result = await collection.find({}).toArray();
+    closeConnection();
+    return result;
+
+}
+
+module.exports = {
+    findAll
+};
