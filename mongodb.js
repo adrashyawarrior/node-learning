@@ -38,7 +38,15 @@ async function create(collection, data) {
     return result;
 }
 
+async function updateOne(collection, where, data) {
+    const db = await connectDB();
+    collection = db.collection(collection);
+    const result = await collection.updateOne(where, data);
+    return result;
+}
+
 module.exports = {
     findAll,
-    create
+    create,
+    updateOne
 };
