@@ -1,21 +1,9 @@
 const { MongoClient } = require("mongodb")
-
-// Connection String
-// const url = 'mongodb://localhost:27017';
-const url = "mongodb+srv://lalit:8gGQeRMMmhJlALfd@cluster0.otjpmcp.mongodb.net/?retryWrites=true&w=majority";
-const client = new MongoClient(url);
-
-// Database Name
-const database = "test";
-
+const { connectDB, closeConnection } = require("./mongodb")
 
 async function main() {
-    // Connect
-    await client.connect();
-    console.log("Connected to Mongo Server Successfully.");
-
-    // Select Database
-    let db = client.db(database);
+    // Connect Database
+    let db = await connectDB();
 
     // Select Collection
     let collection = db.collection('User');
@@ -32,4 +20,4 @@ async function main() {
 main()
     .then(console.log)
     .catch(console.error)
-    .finally(() => { client.close() });
+    .finally(() => { closeConnection() });
