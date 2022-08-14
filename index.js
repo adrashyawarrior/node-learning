@@ -1,25 +1,14 @@
-const express = require("express");
-const path = require("path");
-const ageMiddleware = require("./middleware");
-const route = express.Router();
-const app = express();
+const { MongoClient } = require("mongodb")
+const url = "mongodb+srv://lalit:8gGQeRMMmhJlALfd@cluster0.otjpmcp.mongodb.net/test?retryWrites=true&w=majority";
 
-const pagePath = path.join(__dirname, 'pages');
+const database = "test";
+const client = new MongoClient(url);
+async function getData() {
+    let conn = await client.connect();
+    let db = conn.db(database);
+    let collection = db.collection('User');
+    let result = await collection.find({}).toArray();
+    console.log(result);
+}
 
-route.use(ageMiddleware);
-
-app.get('', (req, res) => {
-    res.sendFile(`${pagePath}/index.html`);
-});
-
-route.get('/about', (req, res) => {
-    res.sendFile(`${pagePath}/about.html`);
-});
-
-route.get('/contact', (req, res) => {
-    res.sendFile(`${pagePath}/contact.html`);
-});
-
-app.use('/', route);
-
-app.listen(4000);
+getData();
