@@ -1,17 +1,7 @@
+require('./config')
 const express = require("express")
-const EventEmitter = require("events")
+const productRoutes = require("./routes/product-routes")
 
 const app = express();
-const event = new EventEmitter();
-
-let count = 0;
-event.on("ApiCalled", () => {
-    count++;
-});
-
-app.get('', (req, res) => {
-    event.emit("ApiCalled");
-    res.send("API Called: " + count);
-});
-
+app.use(productRoutes);
 app.listen(4000)
