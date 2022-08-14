@@ -1,8 +1,17 @@
-const os = require("os");
+const express = require("express")
+const EventEmitter = require("events")
 
-console.log(os.arch());
-console.log(os.freemem() / (1024 * 1024 * 1024))
-console.log(os.totalmem() / (1024 * 1024 * 1024))
-console.log(os.hostname());
-console.log(os.platform());
-console.log(os.userInfo());
+const app = express();
+const event = new EventEmitter();
+
+let count = 0;
+event.on("ApiCalled", () => {
+    count++;
+});
+
+app.get('', (req, res) => {
+    event.emit("ApiCalled");
+    res.send("API Called: " + count);
+});
+
+app.listen(4000)
