@@ -1,10 +1,30 @@
 const mongodb = require("./mongodb")
+const express = require("express")
 
-async function main() {
-    const where = { status: "Active" };
-    let result = await mongodb.deleteMany("User", where);
-    console.log(result);
-    return "Done";
-}
+const app = express();
 
-main().then(console.log).catch(console.error);
+app.use(express.json());
+
+app.get('', async (req, res) => {
+    let result = await mongodb.findAll("User");
+    res.send(result);
+});
+
+app.post('', async (req, res) => {
+    let data = req.body;
+    let result = await mongodb.create("User", data);
+    res.send(result);
+});
+
+app.put('/:name', async (req, res) => {
+    let data = req.body;
+    let result = await mongodb.updateOne("User", { name: req.params.name }, data);
+    res.send(result);
+});
+
+app.delete('/:name', async (req, res) => {
+    let result = await mongodb.deleteOne("User", { name: req.params.name });
+    res.send(result);
+});
+
+app.listen(4000);

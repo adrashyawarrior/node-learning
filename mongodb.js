@@ -42,7 +42,7 @@ async function create(collection, data) {
 async function updateOne(collection, where, data) {
     const db = await connectDB();
     collection = db.collection(collection);
-    const result = await collection.updateOne(where, data);
+    const result = await collection.updateOne(where, { $set: data });
     closeConnection();
     return result;
 }
@@ -50,7 +50,7 @@ async function updateOne(collection, where, data) {
 async function updateMany(collection, where, data) {
     const db = await connectDB();
     collection = db.collection(collection);
-    const result = await collection.updateMany(where, data);
+    const result = await collection.updateMany(where, { $set: data });
     closeConnection();
     return result;
 }
