@@ -1,4 +1,5 @@
 const User = require("../models/user");
+const Product = require("../models/product");
 
 async function index(req, res) {
     try {
@@ -22,7 +23,29 @@ async function create(req, res) {
     }
 }
 
+async function destroy(req, res) {
+    try {
+        let user = await User.findByIdAndDelete(req.params.id);
+        res.send("User Deleted Successfully.");
+    } catch (error) {
+        res.send(error);
+    }
+}
+
+async function addItemToCart(req, res) {
+    try {
+        let product = await Product.findById(req.body.productId);
+        let user = await User.findById(req.body.userId);
+        await user.addItemToCart(product);
+        res.send("Item Added Successfully.");
+    } catch (error) {
+        res.send(error);
+    }
+}
+
 module.exports = {
     index,
-    create
+    create,
+    destroy,
+    addItemToCart,
 };
