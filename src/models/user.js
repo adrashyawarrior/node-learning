@@ -7,7 +7,7 @@ const UserSchema = mongoose.Schema({
     password: { type: String, required: true },
     cart: {
         items: [{
-            productId: {
+            product: {
                 type: mongoose.Schema.Types.ObjectId,
                 ref: 'Product',
                 required: true
@@ -23,14 +23,14 @@ const UserSchema = mongoose.Schema({
 
 UserSchema.methods.addItemToCart = async function (product) {
     const productIndex = this.cart.items.findIndex((item) => {
-        return item.productId.valueOf() === product._id.valueOf();
+        return item.product.valueOf() === product._id.valueOf();
     });
     const cartItems = [...this.cart.items];
     if (productIndex >= 0) {
         cartItems[productIndex].quantity += 1;
     } else {
         cartItems.push({
-            productId: product._id,
+            product: product._id,
             quantity: 1
         });
     }

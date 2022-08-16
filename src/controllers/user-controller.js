@@ -32,6 +32,16 @@ async function destroy(req, res) {
     }
 }
 
+async function show(req, res) {
+    try {
+        let user = await User.findById(req.params.id);
+        user = await user.populate("cart.items.product");
+        res.send(user);
+    } catch (error) {
+        res.send(error);
+    }
+}
+
 async function addItemToCart(req, res) {
     try {
         let product = await Product.findById(req.body.productId);
@@ -45,6 +55,7 @@ async function addItemToCart(req, res) {
 
 module.exports = {
     index,
+    show,
     create,
     destroy,
     addItemToCart,
