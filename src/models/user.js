@@ -38,6 +38,14 @@ UserSchema.methods.addItemToCart = async function (product) {
     return this.save();
 }
 
+UserSchema.methods.removeItemFromCart = async function (productId) {
+    const cartItems = this.cart.items.filter((item) => {
+        return item.product.toString() !== productId;
+    });
+    this.cart.items = cartItems;
+    return this.save();
+}
+
 
 const User = mongoose.model('User', UserSchema);
 

@@ -53,10 +53,21 @@ async function addItemToCart(req, res) {
     }
 }
 
+async function removeItemFromCart(req, res) {
+    try {
+        let user = await User.findById(req.body.userId);
+        await user.removeItemFromCart(req.body.productId);
+        res.send("Item Removed Successfully.");
+    } catch (error) {
+        res.send(error);
+    }
+}
+
 module.exports = {
     index,
     show,
     create,
     destroy,
     addItemToCart,
+    removeItemFromCart
 };
