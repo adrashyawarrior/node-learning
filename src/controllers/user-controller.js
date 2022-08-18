@@ -63,6 +63,10 @@ async function removeItemFromCart(req, res) {
     }
 }
 
+async function placeOrder(req,res){
+    //
+}
+
 module.exports = {
     index,
     show,

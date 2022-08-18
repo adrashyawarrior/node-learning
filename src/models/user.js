@@ -46,7 +46,6 @@ UserSchema.methods.removeItemFromCart = async function (productId) {
     return this.save();
 }
 
-
 const User = mongoose.model('User', UserSchema);
 
 module.exports = User;
